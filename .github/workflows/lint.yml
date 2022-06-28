@@ -15,21 +15,13 @@ jobs:
 
       - uses: actions/cache@v2
         with:
-          path: "**/node_modules"
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+          path: "node_modules"
+          key: ${{ runner.os }}-modules-${{ hashFiles('yarn.lock') }}
 
       - name: Install modules
         run: yarn install
-        working-directory: js
-
-      - name: Install CM UI modules
-        run: yarn install
-        working-directory: js/packages/candy-machine-ui
-
-      - name: Install entangler modules
-        run: yarn install
-        working-directory: js/packages/token-entangler
+        working-directory: .
 
       - name: Run formatting/lint
         run: yarn lint
-        working-directory: js
+        working-directory: .
