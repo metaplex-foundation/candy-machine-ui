@@ -207,7 +207,7 @@ export const getCandyMachineState = async (
       isActive: false,
       isPresale: false,
       isWhitelistOnly: false,
-      goLiveDate,
+      goLiveDate: state.data.goLiveDate,
       treasury: state.wallet,
       tokenMint: state.tokenMint,
       gatekeeper: state.data.gatekeeper,
