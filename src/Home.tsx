@@ -511,10 +511,10 @@ const Home = (props: HomeProps) => {
                   justifyContent="center"
                   wrap="wrap"
                 >
-                  <Grid item xs={12}>
+                  <Grid item md={12}>
                     <img src={logo} className="logo" alt="" />
                   </Grid>
-                  
+
                   <Grid item xs={3}>
                     <Typography variant="body2" color="textSecondary">
                       NFTs Remaining
