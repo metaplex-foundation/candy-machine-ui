@@ -491,7 +491,7 @@ const Home = (props: HomeProps) => {
 
   return (
     <Container style={{ marginTop: 100 }}>
-      <Container maxWidth="xs" style={{ position: "relative" }}>
+      <Container maxWidth="md" style={{ position: "relative" }}>
         <Paper
           style={{
             padding: 24,
@@ -511,7 +511,7 @@ const Home = (props: HomeProps) => {
                   justifyContent="center"
                   wrap="wrap"
                 >
-                  <Grid item md={12}>
+                  <Grid item xs={12}>
                     <img src={logo} className="logo" alt="" />
                   </Grid>
 
