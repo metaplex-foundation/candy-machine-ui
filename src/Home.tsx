@@ -713,7 +713,7 @@ const Home = (props: HomeProps) => {
             display="block"
             style={{ marginTop: 7, color: "grey" }}
           >
-            Powered by METAPLEX
+            Happy Ninjas NFT Project
           </Typography>
         </Paper>
       </Container>
