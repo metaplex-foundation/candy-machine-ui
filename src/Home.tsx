@@ -506,12 +506,16 @@ const Home = (props: HomeProps) => {
             <>
               {candyMachine && (
                 <Grid
-                  container
+                  container spacing={2}
                   direction="row"
                   justifyContent="center"
                   wrap="wrap"
                 >
-                  <Grid item xs={12}>
+                  <Grid   
+                    container
+                    direction="row"
+                    justifyContent="center"
+                    alignItems="center" item xs={12}>
                     <img src={logo} className="logo" alt="" />
                   </Grid>
 
