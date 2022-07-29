@@ -71,6 +71,7 @@ const Home = (props: HomeProps) => {
   const [discountPrice, setDiscountPrice] = useState<anchor.BN>();
   const [needTxnSplit, setNeedTxnSplit] = useState(true);
   const [setupTxn, setSetupTxn] = useState<SetupState>();
+  const [timer, setTimer] = useState<NodeJS.Timeout>();
 
   const rpcUrl = props.rpcHost;
   const wallet = useWallet();
@@ -480,12 +481,9 @@ const Home = (props: HomeProps) => {
   ]);
 
   useEffect(() => {
-    (function loop() {
-      setTimeout(() => {
-        refreshCandyMachineState();
-        loop();
-      }, 20000);
-    })();
+    clearInterval(timer);
+    const newTimer = setInterval(() => refreshCandyMachineState(), 20000);
+    setTimer(newTimer);
   }, [refreshCandyMachineState]);
 
   return (
