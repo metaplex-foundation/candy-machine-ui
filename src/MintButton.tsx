@@ -42,6 +42,7 @@ export const MintButton = ({
   const { requestGatewayToken, gatewayStatus } = useGateway();
   const [webSocketSubscriptionId, setWebSocketSubscriptionId] = useState(-1);
   const [clicked, setClicked] = useState(false);
+  const [waitForActiveToken, setWaitForActiveToken] = useState(false);
 
   const getMintButtonContent = () => {
     if (candyMachine?.state.isSoldOut) {
@@ -93,8 +94,20 @@ export const MintButton = ({
     ) {
       setIsMinting(true);
     }
-    console.log("change: ", gatewayStatus);
-  }, [setIsMinting, previousGatewayStatus, gatewayStatus]);
+    console.log("change: ", GatewayStatus[gatewayStatus]);
+  }, [waitForActiveToken, previousGatewayStatus, gatewayStatus]);
+
+  useEffect(() => {
+    if (
+      waitForActiveToken &&
+      gatewayStatus === GatewayStatus.ACTIVE
+    ) {
+      console.log("Minting after token active");
+      setWaitForActiveToken(false);
+      onMint();
+    }
+
+  }, [waitForActiveToken, gatewayStatus, onMint]);
 
   return (
     <CTAButton
@@ -108,6 +121,7 @@ export const MintButton = ({
               await onMint();
             } else {
               // setIsMinting(true);
+              setWaitForActiveToken(true);
               await requestGatewayToken();
               console.log("after: ", gatewayStatus);
             }
