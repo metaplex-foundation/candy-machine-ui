@@ -542,7 +542,7 @@ async function awaitTransactionSignatureConfirmation(
 
   //@ts-ignore
   try {
-    connection.removeSignatureListener(subId);
+    await connection.removeSignatureListener(subId);
   } catch (e) {
     // ignore
   }
