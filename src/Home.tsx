@@ -306,8 +306,6 @@ const Home = (props: HomeProps) => {
   ) => {
     try {
       setIsUserMinting(true);
-      console.log(`document.getElementById("#identity"): ${document.getElementById("#identity")}`);
-      document.getElementById("#identity")?.click();
       if (wallet.connected && candyMachine?.program && wallet.publicKey) {
         let setupMint: SetupState | undefined;
         if (needTxnSplit && setupTxn === undefined) {
@@ -613,7 +611,6 @@ const Home = (props: HomeProps) => {
                     }
                     clusterUrl={rpcUrl}
                     cluster={cluster}
-                    broadcastTransaction={false}
                     options={{ autoShowModal: false }}
                   >
                     <MintButton
