@@ -11,6 +11,7 @@ import {
   onGatewayTokenChange,
   removeAccountChangeListener,
 } from "@identity.com/solana-gateway-ts";
+import { CIVIC_GATEKEEPER_NETWORK } from "./utils";
 
 export const CTAButton = styled(Button)`
   width: 100%;
@@ -116,7 +117,7 @@ export const MintButton = ({
         if (candyMachine?.state.isActive && candyMachine?.state.gatekeeper) {
           const network =
             candyMachine.state.gatekeeper.gatekeeperNetwork.toBase58();
-          if (network === "ignREusXmGrscGNUesoU9mxfds9AiYTezUKex2PsZV6") {
+          if (network === CIVIC_GATEKEEPER_NETWORK) {
             if (gatewayStatus === GatewayStatus.ACTIVE) {
               await onMint();
             } else {
