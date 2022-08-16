@@ -52,7 +52,8 @@ export const CIVIC = new anchor.web3.PublicKey(
   "gatem74V238djXdzWnJf94Wo1DcnuGkfijbf3AuBhfs"
 );
 
-export const CIVIC_GATEKEEPER_NETWORK = 'ignREusXmGrscGNUesoU9mxfds9AiYTezUKex2PsZV6';
+export const CIVIC_GATEKEEPER_NETWORK =
+  "ignREusXmGrscGNUesoU9mxfds9AiYTezUKex2PsZV6";
 
 export const getAtaForMint = async (
   mint: anchor.web3.PublicKey,

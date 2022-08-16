@@ -99,15 +99,11 @@ export const MintButton = ({
   }, [waitForActiveToken, previousGatewayStatus, gatewayStatus]);
 
   useEffect(() => {
-    if (
-      waitForActiveToken &&
-      gatewayStatus === GatewayStatus.ACTIVE
-    ) {
+    if (waitForActiveToken && gatewayStatus === GatewayStatus.ACTIVE) {
       console.log("Minting after token active");
       setWaitForActiveToken(false);
       onMint();
     }
-
   }, [waitForActiveToken, gatewayStatus, onMint]);
 
   return (
