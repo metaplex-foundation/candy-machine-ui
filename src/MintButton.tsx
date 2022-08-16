@@ -11,6 +11,7 @@ import {
   onGatewayTokenChange,
   removeAccountChangeListener,
 } from "@identity.com/solana-gateway-ts";
+import { CIVIC_GATEKEEPER_NETWORK } from "./utils";
 
 export const CTAButton = styled(Button)`
   width: 100%;
@@ -42,6 +43,7 @@ export const MintButton = ({
   const { requestGatewayToken, gatewayStatus } = useGateway();
   const [webSocketSubscriptionId, setWebSocketSubscriptionId] = useState(-1);
   const [clicked, setClicked] = useState(false);
+  const [waitForActiveToken, setWaitForActiveToken] = useState(false);
 
   const getMintButtonContent = () => {
     if (candyMachine?.state.isSoldOut) {
@@ -93,8 +95,20 @@ export const MintButton = ({
     ) {
       setIsMinting(true);
     }
-    console.log("change: ", gatewayStatus);
-  }, [setIsMinting, previousGatewayStatus, gatewayStatus]);
+    console.log("change: ", GatewayStatus[gatewayStatus]);
+  }, [waitForActiveToken, previousGatewayStatus, gatewayStatus]);
+
+  useEffect(() => {
+    if (
+      waitForActiveToken &&
+      gatewayStatus === GatewayStatus.ACTIVE
+    ) {
+      console.log("Minting after token active");
+      setWaitForActiveToken(false);
+      onMint();
+    }
+
+  }, [waitForActiveToken, gatewayStatus, onMint]);
 
   return (
     <CTAButton
@@ -103,11 +117,12 @@ export const MintButton = ({
         if (candyMachine?.state.isActive && candyMachine?.state.gatekeeper) {
           const network =
             candyMachine.state.gatekeeper.gatekeeperNetwork.toBase58();
-          if (network === "ignREusXmGrscGNUesoU9mxfds9AiYTezUKex2PsZV6") {
+          if (network === CIVIC_GATEKEEPER_NETWORK) {
             if (gatewayStatus === GatewayStatus.ACTIVE) {
               await onMint();
             } else {
               // setIsMinting(true);
+              setWaitForActiveToken(true);
               await requestGatewayToken();
               console.log("after: ", gatewayStatus);
             }
