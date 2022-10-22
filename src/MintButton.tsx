@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import Button from "@material-ui/core/Button";
+import Button from "@mui/material/Button";
 import { CandyMachineAccount } from "./candy-machine";
-import { CircularProgress } from "@material-ui/core";
+import { CircularProgress } from "@mui/material";
 import { GatewayStatus, useGateway } from "@civic/solana-gateway-react";
 import { useEffect, useState, useRef } from "react";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";

@@ -1,50 +1,48 @@
-import { Paper } from "@material-ui/core";
+import { Paper } from "@mui/material";
 import Countdown from "react-countdown";
-import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
 import React from "react";
+import { styled } from "@mui/system";
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      display: "flex",
-      padding: theme.spacing(0),
-      "& > *": {
-        margin: theme.spacing(0.4),
-        width: theme.spacing(6),
-        height: theme.spacing(6),
-        display: "flex",
-        flexDirection: "column",
-        alignContent: "center",
-        alignItems: "center",
-        justifyContent: "center",
-        background: "#384457",
-        color: "white",
-        borderRadius: 5,
-        fontSize: 10,
-      },
-    },
-    done: {
-      display: "flex",
-      margin: 0,
-      marginBottom: theme.spacing(0.5),
-      height: theme.spacing(3.5),
-      padding: theme.spacing(1),
-      flexDirection: "column",
-      alignContent: "center",
-      alignItems: "center",
-      justifyContent: "center",
-      background: "#384457",
-      color: "white",
-      borderRadius: 5,
-      fontWeight: "bold",
-      fontSize: 18,
-    },
-    item: {
-      fontWeight: "bold",
-      fontSize: 18,
-    },
-  })
-);
+const RootContainer = styled("div")(({ theme }) => ({
+  display: "flex",
+  padding: theme.spacing(0),
+  "& > *": {
+    margin: theme.spacing(0.4),
+    width: theme.spacing(6),
+    height: theme.spacing(6),
+    display: "flex",
+    flexDirection: "column",
+    alignContent: "center",
+    alignItems: "center",
+    justifyContent: "center",
+    background: "#384457",
+    color: "white",
+    borderRadius: 5,
+    fontSize: 10,
+  },
+}));
+
+const DoneContainer = styled("span")(({ theme }) => ({
+  display: "flex",
+  margin: 0,
+  marginBottom: theme.spacing(0.5),
+  height: theme.spacing(3.5),
+  padding: theme.spacing(1),
+  flexDirection: "column",
+  alignContent: "center",
+  alignItems: "center",
+  justifyContent: "center",
+  background: "#384457",
+  color: "white",
+  borderRadius: 5,
+  fontWeight: "bold",
+  fontSize: 18,
+}));
+
+const ItemContainer = styled("span")({
+  fontWeight: "bold",
+  fontSize: 18,
+});
 
 interface MintCountdownProps {
   date: Date | undefined;
@@ -67,7 +65,6 @@ export const MintCountdown: React.FC<MintCountdownProps> = ({
   style,
   onComplete,
 }) => {
-  const classes = useStyles();
   const renderCountdown = ({
     days,
     hours,
@@ -77,29 +74,27 @@ export const MintCountdown: React.FC<MintCountdownProps> = ({
   }: MintCountdownRender) => {
     hours += days * 24;
     if (completed) {
-      return status ? <span className={classes.done}>{status}</span> : null;
+      return status ? <DoneContainer>{status}</DoneContainer> : null;
     } else {
       return (
-        <div className={classes.root} style={style}>
+        <RootContainer style={style}>
           <Paper elevation={0}>
-            <span className={classes.item}>
-              {hours < 10 ? `0${hours}` : hours}
-            </span>
+            <ItemContainer>{hours < 10 ? `0${hours}` : hours}</ItemContainer>
             <span>hrs</span>
           </Paper>
           <Paper elevation={0}>
-            <span className={classes.item}>
+            <ItemContainer>
               {minutes < 10 ? `0${minutes}` : minutes}
-            </span>
+            </ItemContainer>
             <span>mins</span>
           </Paper>
           <Paper elevation={0}>
-            <span className={classes.item}>
+            <ItemContainer>
               {seconds < 10 ? `0${seconds}` : seconds}
-            </span>
+            </ItemContainer>
             <span>secs</span>
           </Paper>
-        </div>
+        </RootContainer>
       );
     }
   };
