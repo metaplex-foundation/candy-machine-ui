@@ -10,15 +10,9 @@ import {
   TransactionInstruction,
   TransactionSignature,
   Blockhash,
-  FeeCalculator,
 } from "@solana/web3.js";
 
 import { WalletNotConnectedError } from "@solana/wallet-adapter-base";
-
-interface BlockhashAndFeeCalculator {
-  blockhash: Blockhash;
-  feeCalculator: FeeCalculator;
-}
 
 export const DEFAULT_TIMEOUT = 60000;
 
@@ -29,7 +23,7 @@ export const getErrorForTransaction = async (
   // wait for all confirmation before geting transaction
   await connection.confirmTransaction(txid, "max");
 
-  const tx = await connection.getParsedConfirmedTransaction(txid);
+  const tx = await connection.getParsedTransaction(txid);
 
   const errors: string[] = [];
   if (tx?.meta && tx.meta.logMessages) {
@@ -134,7 +128,7 @@ export const sendTransactions = async (
   commitment: Commitment = "singleGossip",
   successCallback: (txid: string, ind: number) => void = (txid, ind) => {},
   failCallback: (reason: string, ind: number) => boolean = (txid, ind) => false,
-  block?: BlockhashAndFeeCalculator,
+  blockhash?: Blockhash,
   beforeTransactions: Transaction[] = [],
   afterTransactions: Transaction[] = []
 ): Promise<{ number: number; txs: { txid: string; slot: number }[] }> => {
@@ -142,8 +136,8 @@ export const sendTransactions = async (
 
   const unsignedTxns: Transaction[] = beforeTransactions;
 
-  if (!block) {
-    block = await connection.getRecentBlockhash(commitment);
+  if (!blockhash) {
+    blockhash = (await connection.getLatestBlockhash(commitment)).blockhash;
   }
 
   for (let i = 0; i < instructionSet.length; i++) {
@@ -156,12 +150,8 @@ export const sendTransactions = async (
 
     const transaction = new Transaction();
     instructions.forEach((instruction) => transaction.add(instruction));
-    transaction.recentBlockhash = block.blockhash;
-    transaction.setSigners(
-      // fee payed by the wallet owner
-      wallet.publicKey,
-      ...signers.map((s) => s.publicKey)
-    );
+    transaction.recentBlockhash = blockhash;
+    transaction.feePayer = wallet.publicKey;
 
     if (signers.length > 0) {
       transaction.partialSign(...signers);
@@ -234,7 +224,7 @@ export const sendTransaction = async (
   awaitConfirmation = true,
   commitment: Commitment = "singleGossip",
   includesFeePayer: boolean = false,
-  block?: BlockhashAndFeeCalculator
+  blockhash?: Blockhash
 ) => {
   if (!wallet.publicKey) throw new WalletNotConnectedError();
 
@@ -244,20 +234,14 @@ export const sendTransaction = async (
   } else {
     transaction = new Transaction();
     instructions.forEach((instruction) => transaction.add(instruction));
-    transaction.recentBlockhash = (
-      block || (await connection.getRecentBlockhash(commitment))
-    ).blockhash;
 
+    transaction.recentBlockhash =
+      blockhash || (await connection.getLatestBlockhash(commitment)).blockhash;
     if (includesFeePayer) {
-      transaction.setSigners(...signers.map((s) => s.publicKey));
+      transaction.feePayer = signers[0].publicKey;
     } else {
-      transaction.setSigners(
-        // fee payed by the wallet owner
-        wallet.publicKey,
-        ...signers.map((s) => s.publicKey)
-      );
+      transaction.feePayer = wallet.publicKey;
     }
-
     if (signers.length > 0) {
       transaction.partialSign(...signers);
     }
@@ -305,25 +289,19 @@ export const sendTransactionWithRetry = async (
   signers: Keypair[],
   commitment: Commitment = "singleGossip",
   includesFeePayer: boolean = false,
-  block?: BlockhashAndFeeCalculator,
+  blockhash?: Blockhash,
   beforeSend?: () => void
 ) => {
   if (!wallet.publicKey) throw new WalletNotConnectedError();
 
   let transaction = new Transaction();
   instructions.forEach((instruction) => transaction.add(instruction));
-  transaction.recentBlockhash = (
-    block || (await connection.getRecentBlockhash(commitment))
-  ).blockhash;
-
+  transaction.recentBlockhash =
+    blockhash || (await connection.getLatestBlockhash(commitment)).blockhash;
   if (includesFeePayer) {
-    transaction.setSigners(...signers.map((s) => s.publicKey));
+    transaction.feePayer = signers[0].publicKey;
   } else {
-    transaction.setSigners(
-      // fee payed by the wallet owner
-      wallet.publicKey,
-      ...signers.map((s) => s.publicKey)
-    );
+    transaction.feePayer = wallet.publicKey;
   }
 
   if (signers.length > 0) {
