@@ -222,7 +222,7 @@ export const getCandyMachineState = async (
 
 export const getFreezePdaState = async (
   program: anchor.Program,
-  freezePda: anchor.web3.PublicKey,
+  freezePda: anchor.web3.PublicKey
 ): Promise<any> => {
   const state: any = await program.account.freezePda.fetch(freezePda);
   return state;
@@ -269,11 +269,11 @@ export const getCandyMachineCreator = async (
 };
 
 export const getFreezePda = async (
-  candyMachine: anchor.web3.PublicKey,
+  candyMachine: anchor.web3.PublicKey
 ): Promise<[anchor.web3.PublicKey, number]> => {
   return await anchor.web3.PublicKey.findProgramAddress(
-    [Buffer.from('freeze'), candyMachine.toBuffer()],
-    CANDY_MACHINE_PROGRAM,
+    [Buffer.from("freeze"), candyMachine.toBuffer()],
+    CANDY_MACHINE_PROGRAM
   );
 };
 
@@ -518,34 +518,35 @@ export const mintOneToken = async (
   const [candyMachineCreator, creatorBump] = await getCandyMachineCreator(
     candyMachineAddress
   );
-  
-  const freezePda = (await getFreezePda(candyMachineAddress))[0]
-  const freezePdaState = await getFreezePdaState(candyMachine.program,freezePda)
-  console.log("Freeze state: ")
-  console.log(freezePdaState)
-  
+
+  const freezePda = (await getFreezePda(candyMachineAddress))[0];
+  const freezePdaState = await getFreezePdaState(
+    candyMachine.program,
+    freezePda
+  );
+  console.log("Freeze state: ");
+  console.log(freezePdaState);
+
   if (freezePdaState != null) {
-    remainingAccounts.push(
-      {
-        pubkey:freezePda,
-        isWritable:true,
-        isSigner:false
-      }
-    )
-    remainingAccounts.push(
-      {
-        pubkey:userTokenAccountAddress,
-        isWritable:false,
-        isSigner:false
-      }
-    )
+    remainingAccounts.push({
+      pubkey: freezePda,
+      isWritable: true,
+      isSigner: false,
+    });
+    remainingAccounts.push({
+      pubkey: userTokenAccountAddress,
+      isWritable: false,
+      isSigner: false,
+    });
     if (candyMachine.state.tokenMint != null) {
-      const freezeAta = (await getAtaForMint(candyMachine.state.tokenMint, freezePda))[0]
+      const freezeAta = (
+        await getAtaForMint(candyMachine.state.tokenMint, freezePda)
+      )[0];
       remainingAccounts.push({
         pubkey: freezeAta,
-        isWritable:true,
-        isSigner:false
-      })
+        isWritable: true,
+        isSigner: false,
+      });
     }
   }
 
