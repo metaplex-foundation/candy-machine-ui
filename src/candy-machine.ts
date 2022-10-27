@@ -227,9 +227,8 @@ export const getFreezePdaState = async (
   try {
     const state = await program.account.freeze.fetch(freezePda);
     return state;
-
   } catch (error) {
-    return null
+    return null;
   }
 };
 
@@ -375,7 +374,7 @@ export const createAccountsForMint = async (
         [signers],
         SequenceType.StopOnFailure,
         "singleGossip",
-        () => { },
+        () => {},
         () => false,
         undefined,
         [],
@@ -525,8 +524,7 @@ export const mintOneToken = async (
   );
 
   const freezePda = (await getFreezePda(candyMachineAddress))[0];
-  console.log(freezePda.toString())
-
+  console.log(freezePda.toString());
 
   const freezePdaState = await getFreezePdaState(
     candyMachine.program,
@@ -644,7 +642,7 @@ export const mintOneToken = async (
         signersMatrix,
         SequenceType.StopOnFailure,
         "singleGossip",
-        () => { },
+        () => {},
         () => false,
         undefined,
         beforeTransactions,
