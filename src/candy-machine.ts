@@ -224,8 +224,12 @@ export const getFreezePdaState = async (
   program: anchor.Program,
   freezePda: anchor.web3.PublicKey
 ): Promise<any> => {
-  const state: any = await program.account.freezePda.fetch(freezePda);
-  return state;
+  try {
+    const state = await program.account.freeze.fetch(freezePda);
+    return state;
+  } catch (error) {
+    return null;
+  }
 };
 
 const getMasterEdition = async (
@@ -520,10 +524,13 @@ export const mintOneToken = async (
   );
 
   const freezePda = (await getFreezePda(candyMachineAddress))[0];
+  console.log(freezePda.toString());
+
   const freezePdaState = await getFreezePdaState(
     candyMachine.program,
     freezePda
   );
+
   console.log("Freeze state: ");
   console.log(freezePdaState);
 
