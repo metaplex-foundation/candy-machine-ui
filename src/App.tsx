@@ -5,13 +5,6 @@ import Home from "./Home";
 import { DEFAULT_TIMEOUT } from "./connection";
 import { clusterApiUrl } from "@solana/web3.js";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
-import {
-  getPhantomWallet,
-  getSlopeWallet,
-  getSolflareWallet,
-  getSolletExtensionWallet,
-  getSolletWallet,
-} from "@solana/wallet-adapter-wallets";
 
 import {
   ConnectionProvider,
@@ -19,11 +12,18 @@ import {
 } from "@solana/wallet-adapter-react";
 import { WalletDialogProvider } from "@solana/wallet-adapter-material-ui";
 
-import { createTheme, ThemeProvider } from "@material-ui/core";
+import { createTheme, ThemeProvider } from "@mui/material";
+import { PhantomWalletAdapter } from "@solana/wallet-adapter-phantom";
+import { SlopeWalletAdapter } from "@solana/wallet-adapter-slope";
+import { SolflareWalletAdapter } from "@solana/wallet-adapter-solflare";
+import {
+  SolletWalletAdapter,
+  SolletExtensionWalletAdapter,
+} from "@solana/wallet-adapter-sollet";
 
 const theme = createTheme({
   palette: {
-    type: "dark",
+    mode: "dark",
   },
 });
 
@@ -58,11 +58,11 @@ const App = () => {
 
   const wallets = useMemo(
     () => [
-      getPhantomWallet(),
-      getSolflareWallet(),
-      getSlopeWallet(),
-      getSolletWallet({ network }),
-      getSolletExtensionWallet({ network }),
+      new PhantomWalletAdapter(),
+      new SolflareWalletAdapter({ network }),
+      new SlopeWalletAdapter(),
+      new SolletWalletAdapter({ network }),
+      new SolletExtensionWalletAdapter({ network }),
     ],
     []
   );
