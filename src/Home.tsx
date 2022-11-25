@@ -71,7 +71,6 @@ const Home = (props: HomeProps) => {
   const [needTxnSplit, setNeedTxnSplit] = useState(true);
   const [setupTxn, setSetupTxn] = useState<SetupState>();
 
-  const rpcUrl = props.rpcHost;
   const wallet = useWallet();
   const cluster = props.network;
   const anchorWallet = useMemo(() => {
@@ -609,7 +608,7 @@ const Home = (props: HomeProps) => {
                     gatekeeperNetwork={
                       candyMachine?.state?.gatekeeper?.gatekeeperNetwork
                     }
-                    clusterUrl={rpcUrl}
+                    connection={new Connection(props.rpcHost, 'processed')}
                     cluster={cluster}
                     options={{ autoShowModal: false }}
                   >
