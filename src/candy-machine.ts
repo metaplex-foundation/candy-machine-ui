@@ -225,7 +225,7 @@ export const getFreezePdaState = async (
   freezePda: anchor.web3.PublicKey
 ): Promise<any> => {
   try {
-    const state = await program.account.freeze.fetch(freezePda);
+    const state: any = await program.account.freezePda.fetch(freezePda);
     return state;
   } catch (error) {
     return null;
