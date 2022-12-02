@@ -631,9 +631,9 @@ const Home = (props: HomeProps) => {
             variant="caption"
             align="center"
             display="block"
-            style={{ marginTop: 7, color: "grey" }}
+            style={{ marginTop: 7, color: "white" , fontSize: 18,}}
           >
-            Powered by METAPLEX
+            Locus NFT Collection
           </Typography>
         </Paper>
       </Container>
