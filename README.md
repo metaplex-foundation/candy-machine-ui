@@ -1,6 +1,6 @@
 # Metaplex Candy Machine Reference UI
 
-## Remove Slope (scam) wallet
+## Removed Slope (scam) wallet
 
 See [soladex report](https://soladex.io/project/slope-wallet-scam/) describing the issue.
 
