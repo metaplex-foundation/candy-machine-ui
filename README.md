@@ -14,3 +14,5 @@ If you encounter the error below, you'll need to run `export ENV NODE_OPTIONS="-
   reason: 'unsupported',
   code: 'ERR_OSSL_EVP_UNSUPPORTED'
 ```
+
+When deploying to Vercel, you'll to override the build command with `export ENV NODE_OPTIONS="--openssl-legacy-provider" && yarn build`.
