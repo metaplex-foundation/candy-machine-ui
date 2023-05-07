@@ -466,7 +466,13 @@ const Home = (props: HomeProps) => {
   }, [refreshCandyMachineState]);
 
   return (
-    <Container style={{ marginTop: 100 }}>
+    <Container style={{ 
+      position: "absolute",
+      top: "45%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      marginTop: 50, 
+      }}>
       <Container maxWidth="xs" style={{ position: "relative" }}>
         <Paper
           style={{
@@ -487,7 +493,7 @@ const Home = (props: HomeProps) => {
                 }
               }}
             >
-              Connect Wallet
+              Conectar Carteira
             </ConnectButton>
           ) : (
             <>
